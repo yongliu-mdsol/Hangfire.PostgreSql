@@ -71,11 +71,7 @@ WHERE ""id"" IN (
     FROM """ + _options.SchemaName + $@""".""jobqueue"" 
     WHERE ""queue"" = ANY (@queues)
     AND ""fetchedat"" {{0}}
-    ORDER BY
-    CASE ""queue""
-        {string.Join("\n", queues.Select((q, i) => $"WHEN '{q}' THEN {i}"))}
-        ELSE {queues.Length}
-    END,
+    ORDER BY ""queue"",
     ""fetchedat"", ""jobid""
     FOR UPDATE SKIP LOCKED
     LIMIT 1
